@@ -15,4 +15,4 @@ Kakao login as an sign-in options on their app using Firebase as a backend.
    (If you want to use Javascript version, refer to https://pub.dev/packages/firebase_auth_simplify package's github source code)  
 
 4. Invoke the cloude message by using CloudFunction in Flutter code with function name as 'customTokenFromKakao'.  
-   Pass 'Kakao Access Token' you fetched from this package with 'token' parameter when invoking the cloud function.  
+   Pass 'Kakao Access Token' you fetched from this package with 'token' parameter when invoking the cloud function.   
