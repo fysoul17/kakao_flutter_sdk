@@ -10,5 +10,5 @@
     "allowJs": true
   },
   "compileOnSave": true,
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "config/**/*.ts"]
 }

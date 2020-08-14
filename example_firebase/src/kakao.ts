@@ -1,6 +1,7 @@
 import * as admin from "firebase-admin";
 import { UserRecord } from "firebase-functions/lib/providers/auth";
 import axios from "axios";
+import { Kakao_InvalidAppIdError, Kakao_UserNotFoundError, Kakao_EmailNotVerifiedError, Kakao_EmailAlreadyInUse } from "../config/errors";
 
 // Kakao API request url to retrieve user profile based on access token
 const baseUrl = "https://kapi.kakao.com/";
@@ -19,12 +20,12 @@ const accessTokenInfoUrl = "/v1/user/access_token_info";
 export const createFirebaseToken = async function (appId: number, kakaoAccessToken: string): Promise<string> {
   const tokenInfo = await validateToken(kakaoAccessToken);
   if (tokenInfo.appId !== appId) {
-    throw new Error("The given token does not belong to this application " + tokenInfo.appId + " or appId is not a number");
+    throw Kakao_InvalidAppIdError;
   }
 
   const kakaoUser = await requestMe(kakaoAccessToken);
   if (kakaoUser.id === undefined || kakaoUser.id < 0) {
-    throw new Error("There was no user with the given access token.");
+    throw Kakao_UserNotFoundError;
   }
 
   const userRecord = await fetchUserOrCreate(
@@ -168,10 +169,10 @@ async function getUser(kakaoUserId: number, email: string, emailVerified: boolea
       }
 
       if (!emailVerified) {
-        throw new Error("This user should authenticate first with other providers");
+        throw Kakao_EmailNotVerifiedError;
       }
 
-      throw new Error("The email address is already in use by another account.");
+      throw Kakao_EmailAlreadyInUse;
     }
 
     throw error;
@@ -208,14 +209,14 @@ export const linkToCurrentUser = async function (kakaoAccessToken: string, appId
   return validateToken(kakaoAccessToken)
     .then((tokenInfo) => {
       if (tokenInfo.appId !== appId) {
-        throw new Error("The given token does not belong to this application " + tokenInfo.appId + " or appId is not a number");
+        throw Kakao_InvalidAppIdError;
       }
       return requestMe(kakaoAccessToken);
     })
     .then(async (kakaoUser) => {
       const userId = kakaoUser.id;
       if (!userId) {
-        throw new Error("There was no user with the given access token.");
+        throw Kakao_UserNotFoundError;
       }
 
       return admin
