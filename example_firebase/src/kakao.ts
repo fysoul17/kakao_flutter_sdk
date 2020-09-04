@@ -138,7 +138,7 @@ export const requestMe = async function (kakaoAccessToken: string): Promise<Kaka
  */
 async function fetchUserOrCreate(kakaoUserId: number, email: string, emailVerified: boolean, displayName: string, photoURL: string): Promise<UserRecord> {
   try {
-    return getUser(kakaoUserId, email, emailVerified);
+    return await getUser(kakaoUserId, email, emailVerified);
   } catch (error) {
     if (error.code === "auth/user-not-found") {
       return admin.auth().createUser({ uid: `kakao:${kakaoUserId}`, displayName: displayName, email: email, photoURL: photoURL });
@@ -161,7 +161,7 @@ async function fetchUserOrCreate(kakaoUserId: number, email: string, emailVerifi
  */
 async function getUser(kakaoUserId: number, email: string, emailVerified: boolean): Promise<UserRecord> {
   try {
-    return admin.auth().getUser(`kakao:${kakaoUserId}`);
+    return await admin.auth().getUser(`kakao:${kakaoUserId}`);
   } catch (error) {
     if (error.code === "auth/user-not-found") {
       if (!email) {
