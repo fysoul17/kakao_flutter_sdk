@@ -172,7 +172,10 @@ async function getUser(kakaoUserId: number, email: string, emailVerified: boolea
         throw Kakao_EmailNotVerifiedError;
       }
 
-      throw Kakao_EmailAlreadyInUse;
+      const userRecord: UserRecord = await admin.auth().getUserByEmail(email);
+      if (userRecord) {
+        throw Kakao_EmailAlreadyInUse;
+      }
     }
 
     throw error;
