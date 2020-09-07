@@ -33,7 +33,7 @@ export const createFirebaseToken = async function (appId: number, kakaoAccessTok
     kakaoUser.kakao_account.email,
     kakaoUser.kakao_account.is_email_verified,
     kakaoUser.kakao_account.profile.nickname,
-    kakaoUser.kakao_account.profile.profile_image
+    kakaoUser.kakao_account.profile.profile_image_url
   );
 
   return admin.auth().createCustomToken(userRecord.uid, { kakaoUID: userRecord.uid, provider: "kakaocorp.com" });
@@ -102,7 +102,7 @@ interface KakaoAccount {
 
 interface KakaoProfile {
   nickname: string; //	닉네임
-  profile_image: string; //	프로필 이미지 URL, 640px * 640px 또는 480px * 480px
+  profile_image_url: string; //	프로필 이미지 URL, 640px * 640px 또는 480px * 480px
   thumbnail_image_url: string; //프로필 미리보기 이미지 URL, 110px * 110px 또는 100px * 100px
   profiile_needs_agreement: boolean; //	사용자 동의 시 프로필 제공 가능
 }
