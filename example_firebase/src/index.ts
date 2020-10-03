@@ -19,7 +19,7 @@ export const customTokenFromKakao = functions.https.onCall(async (data, context)
   if (!token) return { error: "There is no token provided." };
 
   return kakao
-    .createFirebaseToken(+kakaoAppId, token)
+    .createFirebaseToken(kakaoAppId, token)
     .then((firebaseToken) => {
       return { token: firebaseToken };
     })
